@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
@@ -14,6 +12,11 @@ class LocalStorage {
   static Future<String?> getData(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
+  }
+
+  static Future<void> removeData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
   }
 
   static Future<void> saveDataList(List<String> list) async {

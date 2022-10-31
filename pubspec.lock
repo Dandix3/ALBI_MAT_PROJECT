@@ -43,6 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  crypt:
+    dependency: "direct main"
+    description:
+      name: crypt
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -94,7 +108,7 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -106,7 +120,7 @@ packages:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "4.0.2"
   js:
     dependency: transitive
     description:
@@ -120,7 +134,7 @@ packages:
       name: lints
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   matcher:
     dependency: transitive
     description:
@@ -199,14 +213,14 @@ packages:
     source: hosted
     version: "4.2.4"
   provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.3"
+    version: "6.0.4"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -218,7 +232,7 @@ packages:
       name: shared_preferences_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.13"
+    version: "2.0.14"
   shared_preferences_ios:
     dependency: transitive
     description:
@@ -328,7 +342,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   xdg_directories:
     dependency: transitive
     description:
