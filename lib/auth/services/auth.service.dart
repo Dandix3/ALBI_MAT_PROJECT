@@ -64,8 +64,9 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<bool> logout() async {
+  Future<bool> logout(UserService userService) async {
     LocalStorage.removeData('token');
+    userService.clear();
     isAuthenticated = false;
     notifyListeners();
     return true;

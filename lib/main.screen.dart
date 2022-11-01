@@ -2,26 +2,37 @@ import 'package:albi_hry/auth/services/auth.service.dart';
 import 'package:albi_hry/shared/screens/init_startup.dart';
 import 'package:albi_hry/user/screens/user.screen.dart';
 import 'package:albi_hry/user/services/user.service.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'auth/screens/login.screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   static const routeName = '/main_screen';
+
   const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
     final userService = Provider.of<UserService>(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return InitStartUp(
         onInit: () {
           authService.isLoggedIn(userService);
         },
         child: Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: theme.backgroundColor,
           appBar: AppBar(
             title: const Text('Albi hry'),
             actions: [
@@ -37,44 +48,57 @@ class MainScreen extends StatelessWidget {
               ),
             ],
           ),
-          body: SingleChildScrollView(
+          body: Center(
             child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Text(
-                      'Albi hry',
-                      style: Theme.of(context).textTheme.headline1,
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  Container(
+                    child:
+                        Text('Moje Knihovna'),
+                  ),
+                  const Spacer(),
+                  Center(
+                    child: Text('Knihovna je prázdná, \n přidejte si hru',)
+                  ),
+                  SizedBox(height: 100),
+                  Transform.rotate(
+                    angle: -3.14 / 6,
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 150),
+                        width: 200,
+                        child: Image.asset('backgrounds/background-arrow.png', color: Colors.white,
+                        ),
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Vítejte v aplikaci Albi hry',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 30),
+                ],
               ),
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Domů',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.games),
-                label: 'Hry',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profil',
-              ),
-            ],
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: const Icon(Icons.add),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100)),
           ),
-        )
-    );
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: AnimatedBottomNavigationBar(
+            icons: const [
+              Icons.library_books_rounded,
+              Icons.search,
+              Icons.apps,
+              Icons.favorite,
+            ],
+            backgroundColor: theme.colorScheme.background,
+            activeIndex: index,
+            gapLocation: GapLocation.center,
+            activeColor: theme.colorScheme.secondary,
+            notchSmoothness: NotchSmoothness.smoothEdge,
+            onTap: (index) => setState(() => this.index = index),
+          ),
+        ));
   }
 }
