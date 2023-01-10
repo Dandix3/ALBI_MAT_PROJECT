@@ -1,13 +1,22 @@
-import 'package:albi_hry/auth/screens/register.screen.dart';
-import 'package:albi_hry/auth/screens/login.screen.dart';
-import 'package:albi_hry/main.screen.dart';
-import 'package:albi_hry/user/screens/user.screen.dart';
+import 'package:albi_hry/features/auth/providers/auth.provider.dart';
+import 'package:albi_hry/features/game/providers/game.provider.dart';
+import 'package:albi_hry/features/game/screens/game_detail.screen.dart';
+import 'package:albi_hry/features/library/providers/library.provider.dart';
+import 'package:albi_hry/features/notifications/providers/notification.provider.dart';
+import 'package:albi_hry/features/notifications/screens/notification.screen.dart';
+import 'package:albi_hry/features/user/providers/user.provider.dart';
+import 'package:albi_hry/shared/user/models/user.dart';
+import 'package:albi_hry/shared/utils/loading-widget/loading.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'auth/services/auth.service.dart';
 import 'config/theme.dart';
-import 'user/services/user.service.dart';
+
+import 'features/user/providers/user-friend.provider.dart';
+import 'main-sceen/main.screen.dart';
+import 'features/auth/screens/login.screen.dart';
+import 'features/auth/screens/register.screen.dart';
+import 'features/user/screens/user.screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,18 +29,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (ctx) => AuthService()),
-        ChangeNotifierProvider(create: (ctx) => UserService()),
+        ChangeNotifierProvider(create: (ctx) => UserProvider()),
+        ChangeNotifierProvider(create: (ctx) => UserFriendProvider()),
+        ChangeNotifierProvider(create: (ctx) => GameProvider()),
+        ChangeNotifierProvider(create: (ctx) => LoadingProvider()),
+        ChangeNotifierProvider(create: (ctx) => LibraryProvider()),
+        ChangeNotifierProvider(create: (ctx) => NotificationProvider()),
+        ChangeNotifierProxyProvider3<UserProvider, LibraryProvider,
+                UserFriendProvider, AuthProvider>(
+            create: (ctx) => AuthProvider(null, null, null),
+            update: (ctx, userProvider, libraryProvider, userFriendProvider,
+                    auth) =>
+                AuthProvider(
+                    userProvider, libraryProvider, userFriendProvider)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Alby hry',
         theme: albi_theme,
-        home: const MainScreen(),
+        initialRoute: '/main_screen',
         routes: {
           LoginScreen.routeName: (ctx) => const LoginScreen(),
           RegisterScreen.routeName: (ctx) => const RegisterScreen(),
           MainScreen.routeName: (ctx) => const MainScreen(),
           UserScreen.routeName: (ctx) => const UserScreen(),
+          GameDetailScreen.routeName: (ctx) => const GameDetailScreen(),
+          NotificationScreen.routeName: (ctx) => const NotificationScreen(),
         },
       ),
     );

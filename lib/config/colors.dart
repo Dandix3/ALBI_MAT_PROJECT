@@ -6,5 +6,6 @@ class AlbiColors {
   static const Color primaryColorRed = Color.fromRGBO(237, 17, 100, 1.0);
   static const Color backgroundColorDark = Color.fromRGBO(0, 39, 82, 1);
   static const Color backgroundColorLight = Color.fromRGBO(0, 66, 136, 1.0);
+  static const Color backgroundColorLighter = Color.fromRGBO(0, 56, 115, 1.0);
 
 }
