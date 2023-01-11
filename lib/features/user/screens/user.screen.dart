@@ -35,11 +35,13 @@ class UserScreen extends StatelessWidget {
                     ProfileHeader(),
                     const SizedBox(height: 20),
                     Container(
-                      width: size.width * 0.9,
+                      width: size.width,
                       height: size.height * 0.8,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [],
+                        children: [
+                          Center(child: Text("Zde budou statistiky atd."))
+                        ],
                       ),
                     ),
                     const Divider(
@@ -59,6 +61,9 @@ class UserScreen extends StatelessWidget {
                           horizontal: 20, vertical: 5),
                       child: ElevatedButton(
                           onPressed: logout, child: const Text('Odhlásit se')),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                   ],
                 )

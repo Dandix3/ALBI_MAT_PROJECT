@@ -20,18 +20,20 @@ class ApiService {
   }
 
   static Future<HttpResponse> post(String url, Map<String, dynamic> data) async {
-    final response = await http.post(Uri.parse('${Config.apiUrl}$url'), body: data);
-    print(response.statusCode.toString() + response.body + "asd");
-    final res = HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
-    return res;
+    print('asdasdasdasdsad');
+    final response = await http.post(Uri.parse('${Config.apiUrl}$url'), body: jsonEncode(data), headers: {
+      'Content-Type': 'application/json',
+
+    });
+    print('asdasdasdsadsadd');
+    print(response.statusCode);
+    return HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
   }
 
   static Future<HttpResponse> put(String url, Map<String, dynamic> data) async {
-    final response =
-        await http.put(Uri.parse('${Config.apiUrl}$url'), body: data);
-    final res =
-        HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
-    return res;
+    final response = await http.put(Uri.parse('${Config.apiUrl}$url'), body: jsonEncode(data));
+
+    return HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
   }
 
   static Future<HttpResponse> delete(String url) async {
@@ -44,7 +46,7 @@ class ApiService {
   static Future<HttpResponse> autorizedGet(
       String url, Map<String, dynamic>? data) async {
     final token = await getToken();
-    final uri = Uri.http(Config.uriUrl, Config.uriPath + url, data);
+    final uri = Uri.https(Config.uriUrl, Config.uriPath + url, data);
     final response = await http.get(uri, headers: {
       'Authorization': 'Bearer $token',
     });
@@ -54,16 +56,15 @@ class ApiService {
     return res;
   }
 
-  static Future<HttpResponse> autorizedPost(
-      String url, Map<String, dynamic> data) async {
+  static Future<HttpResponse> autorizedPost(String url, Map<String, dynamic> data) async {
     final token = await getToken();
-    final response = await http
-        .post(Uri.parse('${Config.apiUrl}$url'), body: data, headers: {
+    const apiUrl = "http://albi-hry-backend-master.ogapps.cloud";
+    final response = await http.post(Uri.parse(Config.apiUrl+url), body: jsonEncode(data), headers: {
       'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
     });
-    final res =
-        HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
-    return res;
+    return HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
   }
 
   static Future<HttpResponse> autorizedPut(

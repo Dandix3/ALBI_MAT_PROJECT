@@ -4,6 +4,7 @@ import 'package:albi_hry/shared/user/models/user.dart';
 import 'package:albi_hry/shared/utils/snackbars/success_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:albi_hry/shared/utils/http/models/http_response.dart';
+import '../../../shared/user/enums/friend_status_type.dart';
 
 import '../../../shared/user/models/user-friend.dart';
 
@@ -20,18 +21,12 @@ class UserFriendProvider with ChangeNotifier {
   List<UserFriend> get friendsRequests => _friendsRequests;
   List<UserFriend> get friendsPending => _pendingFriendRequests;
 
+  bool _friendStatus = false;
+
+  get friendStatus => _friendStatus;
+
   UserFriendProvider() {
     fetchAndSetFriends();
-    Future.delayed(const Duration(milliseconds: 5000), () {
-      _userFriendService.getFriendsRequests().then((value) {
-        if (value.statusCode == 200) {
-          _setFriends(value);
-          notifyListeners();
-        } else {
-          //todo: handle error
-        }
-      });
-    });
   }
 
   Future<void> fetchAndSetFriends() async {
@@ -115,6 +110,15 @@ class UserFriendProvider with ChangeNotifier {
   void clearFriendsRequests() {
     _friendsRequests = [];
     notifyListeners();
+  }
+
+  void setFriendStatus() {
+    _friendStatus = true;
+    notifyListeners();
+    Future.delayed(Duration(seconds: 1), () {
+      _friendStatus = false;
+      notifyListeners();
+    });
   }
 
   void _setFriends(HttpResponse value) {

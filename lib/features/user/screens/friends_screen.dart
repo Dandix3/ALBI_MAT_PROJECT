@@ -30,6 +30,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
       });
     }
 
+    if (userFriendProvider.friendStatus == true) {
+      setState(() {
+        index = FriendStatusType.pending;
+        print("index: $index");
+      });
+    }
+
     return Container(
       child: authProvider.isAuthenticated
           ? Column(

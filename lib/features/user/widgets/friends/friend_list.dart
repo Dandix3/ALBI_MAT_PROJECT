@@ -93,7 +93,7 @@ class UserFriendList extends StatelessWidget {
                       leading: CircleAvatar(
                         radius: 40,
                         backgroundImage:
-                            NetworkImage('https://picsum.photos/200'),
+                        NetworkImage('https://picsum.photos/200'),
                       ),
                       title: Text(
                         friends[index].friend!.nickname,
@@ -108,8 +108,8 @@ class UserFriendList extends StatelessWidget {
                               friendStatusType == FriendStatusType.accepted
                                   ? 'Přátelé od '
                                   : friendStatusType == FriendStatusType.incoming
-                                      ?  'Odesláno '
-                                      : 'Odesláno ',
+                                  ?  'Odesláno '
+                                  : 'Odesláno ',
                               style: theme.textTheme.subtitle1,
                             ),
                             Text(

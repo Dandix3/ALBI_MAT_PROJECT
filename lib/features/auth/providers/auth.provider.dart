@@ -16,9 +16,9 @@ class AuthProvider with ChangeNotifier {
 
   final UserProvider? _userProvider;
   final LibraryProvider? _libraryProvider;
-  final UserFriendProvider? _userFriendProvider;
 
-  AuthProvider(this._userProvider, this._libraryProvider, this._userFriendProvider) {
+  AuthProvider(this._userProvider, this._libraryProvider) {
+    // todo: při pull refreshi se to aktivuje a buggne
     isLoggedIn();
   }
 
@@ -36,7 +36,6 @@ class AuthProvider with ChangeNotifier {
         isAuthenticated = true;
         _userProvider!.fetchAndSetUser();
         _libraryProvider!.fetchAndSetLibrary();
-        _userFriendProvider!.fetchAndSetFriendsAndRequests();
         notifyListeners();
         return response;
       } else {

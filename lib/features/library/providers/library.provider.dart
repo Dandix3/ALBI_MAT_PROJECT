@@ -61,8 +61,8 @@ class LibraryProvider extends ChangeNotifier {
   Future<Game?> fetchGame(String barcode, BuildContext context) async {
     return await GameService.getGameByScan(barcode).then((value) {
           if (value is Game) {
+            _addGame(value);
             return value;
-              //_addGame(value)
             } else {
               throwError(context: context, title: value.toString());
             }

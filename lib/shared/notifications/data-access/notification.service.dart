@@ -5,7 +5,7 @@ class NotificationService {
   final String apiEndpoint = 'achievement-actions';
 
   Future<HttpResponse> getAchievementActions() async {
-    final response = await ApiService.autorizedGet('$apiEndpoint/', null);
+    final response = await ApiService.autorizedGet('$apiEndpoint', null);
     if (response.statusCode == 200) {
       return response;
     } else {

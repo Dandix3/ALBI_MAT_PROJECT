@@ -35,13 +35,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => LoadingProvider()),
         ChangeNotifierProvider(create: (ctx) => LibraryProvider()),
         ChangeNotifierProvider(create: (ctx) => NotificationProvider()),
-        ChangeNotifierProxyProvider3<UserProvider, LibraryProvider,
-                UserFriendProvider, AuthProvider>(
-            create: (ctx) => AuthProvider(null, null, null),
-            update: (ctx, userProvider, libraryProvider, userFriendProvider,
-                    auth) =>
+        ChangeNotifierProxyProvider2<UserProvider, LibraryProvider, AuthProvider>(
+            create: (ctx) => AuthProvider(null, null),
+            update: (ctx, userProvider, libraryProvider, auth) =>
                 AuthProvider(
-                    userProvider, libraryProvider, userFriendProvider)),
+                    userProvider, libraryProvider)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

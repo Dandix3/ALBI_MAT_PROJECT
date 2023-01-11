@@ -119,6 +119,7 @@ class FloatingActionBtn extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       userFriendProvider.addFriend(value.id);
+                      userFriendProvider.setFriendStatus();
                       Navigator.of(context).pop();
                     },
                     child: const Text('Přidat'),
