@@ -10,6 +10,8 @@ import '../../../shared/user/models/user-friend.dart';
 
 class UserFriendProvider with ChangeNotifier {
 
+  UserFriendService _userFriendService = UserFriendService();
+
   List<UserFriend> _friends = [];
   List<UserFriend> _friendsRequests = [];
   List<UserFriend> _pendingFriendRequests = [];
@@ -20,21 +22,29 @@ class UserFriendProvider with ChangeNotifier {
 
   UserFriendProvider() {
     fetchAndSetFriends();
+    Future.delayed(const Duration(milliseconds: 5000), () {
+      _userFriendService.getFriendsRequests().then((value) {
+        if (value.statusCode == 200) {
+          _setFriends(value);
+          notifyListeners();
+        } else {
+          //todo: handle error
+        }
+      });
+    });
   }
 
   Future<void> fetchAndSetFriends() async {
-    await UserFriendService.getFriends().then((value) {
+    return _userFriendService.getFriends().then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
-      } else {
-        //todo: handle error
-      }
+      } else { }
     });
   }
 
   Future<void> fetchAndSetFriendsRequests() async {
-    await UserFriendService.getFriendsRequests().then((value) {
+    await _userFriendService.getFriendsRequests().then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
@@ -45,7 +55,7 @@ class UserFriendProvider with ChangeNotifier {
   }
 
   Future<void> addFriend(int id) async {
-    await UserFriendService.addFriend(id).then((value) {
+    await _userFriendService.addFriend(id).then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
@@ -56,7 +66,7 @@ class UserFriendProvider with ChangeNotifier {
   }
 // cock
   Future<void> acceptFriendRequest(int id, BuildContext context) async {
-    await UserFriendService.acceptFriendRequest(id).then((value) {
+    await _userFriendService.acceptFriendRequest(id).then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
@@ -68,7 +78,7 @@ class UserFriendProvider with ChangeNotifier {
   }
 
   Future<void> declineFriendRequest(int id, BuildContext context) async {
-    await UserFriendService.declineFriendRequest(id).then((value) {
+    await _userFriendService.declineFriendRequest(id).then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
@@ -80,7 +90,7 @@ class UserFriendProvider with ChangeNotifier {
   }
 
   Future<bool> removeFriend(int id, BuildContext context) async {
-    await UserFriendService.removeFriend(id).then((value) {
+    await _userFriendService.removeFriend(id).then((value) {
       if (value.statusCode == 200) {
         _setFriends(value);
         notifyListeners();
@@ -108,8 +118,6 @@ class UserFriendProvider with ChangeNotifier {
   }
 
   void _setFriends(HttpResponse value) {
-   // _friends = value.data != [] ? value.data.map<UserFriend>((x) => UserFriend.fromObject(x)).toList() : [];
-
     _friends = value.data['friends'] != [] ? (value.data['friends'] as List).map<UserFriend>((x) => UserFriend.fromObject(x)).toList() : [];
     _friendsRequests = value.data['friendRequests'] != [] ? (value.data['friendRequests'] as List).map<UserFriend>((x) => UserFriend.fromObject(x)).toList() : [];
     _pendingFriendRequests = value.data['pendingFriendRequests'] != [] ? (value.data['pendingFriendRequests'] as List).map<UserFriend>((x) => UserFriend.fromObject(x)).toList() : [];

@@ -31,71 +31,100 @@ class _FriendsScreenState extends State<FriendsScreen> {
     }
 
     return Container(
-      child: authProvider.isAuthenticated ? Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                ),
-                padding: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: authProvider.isAuthenticated
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Stack(
                   children: [
-                    FriendTab(
-                      friendStatusType: FriendStatusType.accepted,
-                      changeTab: () {
-                        changeTab(FriendStatusType.accepted);
-                      },
-                      active: index == FriendStatusType.accepted,
-                      title: 'Přátelé',
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: theme.colorScheme.primary,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                child: Text('Přátelé',
+                                    style: theme.textTheme.headline5),
+                                onTap: () =>
+                                    changeTab(FriendStatusType.accepted),
+                              ),
+                              GestureDetector(
+                                child: Text('Žádosti',
+                                    style: theme.textTheme.headline5),
+                                onTap: () =>
+                                    changeTab(FriendStatusType.incoming),
+                              ),
+                              GestureDetector(
+                                child: Text('Nevyřízené',
+                                    style: theme.textTheme.headline5),
+                                onTap: () =>
+                                    changeTab(FriendStatusType.pending),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    FriendTab(
-                      friendStatusType: FriendStatusType.incoming,
-                      changeTab: () {
-                        changeTab(FriendStatusType.incoming);
-                      },
-                      active: index == FriendStatusType.incoming,
-                      title: 'Žádosti',
-                    ),
-                    FriendTab(
-                      friendStatusType: FriendStatusType.pending,
-                      changeTab: () {
-                        changeTab(FriendStatusType.pending);
-                      },
-                      active: index == FriendStatusType.pending,
-                      title: 'Nevyřízené',
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                      height: 5,
+                      width: index == FriendStatusType.accepted
+                          ? 60
+                          : index == FriendStatusType.incoming
+                              ? 65
+                              : 85,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(10),
+                        ),
+                      ),
+                      margin: EdgeInsets.only(
+                        top: 43,
+                        left: index == FriendStatusType.accepted
+                            ? size.width * 0.08
+                            : index == FriendStatusType.incoming
+                                ? size.width * 0.38
+                                : size.width * 0.7,
+                      ),
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: size.height * 0.8 - 50,
+                  child: index == FriendStatusType.accepted
+                      ? UserFriendList(
+                          friends: userFriendProvider.friends,
+                          friendStatusType: FriendStatusType.accepted)
+                      : index == FriendStatusType.incoming
+                          ? UserFriendList(
+                              friends: userFriendProvider.friendsRequests,
+                              friendStatusType: FriendStatusType.incoming)
+                          : UserFriendList(
+                              friends: userFriendProvider.friendsPending,
+                              friendStatusType: FriendStatusType.pending),
+                ),
+              ],
+            )
+          : Center(
+              child: Text(
+                'Pro zobrazení přátel se musíte přihlásit',
+                style: theme.textTheme.headline6,
               ),
-            ],
-          ),
-          SizedBox(
-            height: size.height * 0.8 - 50,
-            child: index == FriendStatusType.accepted
-                ? UserFriendList(friends: userFriendProvider.friends, friendStatusType: FriendStatusType.accepted)
-                : index == FriendStatusType.incoming
-                ? UserFriendList(
-                friends: userFriendProvider.friendsRequests, friendStatusType: FriendStatusType.incoming)
-                : UserFriendList(
-                friends: userFriendProvider.friendsPending, friendStatusType: FriendStatusType.pending),
-          ),
-        ],
-      ) : Center(
-        child: Text(
-          'Pro zobrazení přátel se musíte přihlásit',
-          style: theme.textTheme.headline6,
-        ),
-      ),
+            ),
     );
   }
 }

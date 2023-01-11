@@ -52,7 +52,8 @@ class _RegisterFormState extends State<RegisterForm> {
             .then((value) {
           loadingProvider.setLoading(false);
           if (value.status) {
-            Navigator.of(context).pushNamed(MainScreen.routeName);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                MainScreen.routeName, (Route<dynamic> route) => false);
           } else {
             var errors = value.errors?.map((e) => e).toList();
             throwError(

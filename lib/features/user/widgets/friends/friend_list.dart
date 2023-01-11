@@ -24,14 +24,11 @@ class UserFriendList extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.only(top: 8),
-      child: friends.isEmpty
-          ? Center(
-              child: Text(
-                'Žádní přátelé',
-                style: theme.textTheme.headline6,
-              ),
-            )
-          : ListView.separated(
+      child: RefreshIndicator(
+              onRefresh: () {
+                return userFriendProvider.fetchAndSetFriends();
+              },
+              child: ListView.separated(
               itemBuilder: (context, index) {
                 return Slidable(
                   key: Key('${friends[index].id.toString()} ${friendStatusType.toString()}'),
@@ -137,6 +134,7 @@ class UserFriendList extends StatelessWidget {
               },
               itemCount: friends.length,
             ),
+      ),
     );
   }
 }
