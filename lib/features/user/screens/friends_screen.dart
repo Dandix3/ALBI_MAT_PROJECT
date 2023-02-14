@@ -1,4 +1,3 @@
-import 'package:albi_hry/features/user/widgets/friends/friend_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +32,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
     if (userFriendProvider.friendStatus == true) {
       setState(() {
         index = FriendStatusType.pending;
-        print("index: $index");
       });
     }
 

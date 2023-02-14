@@ -15,7 +15,8 @@ class AchievementBar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         color: gameProvider.selectedAchievement == achievement
             ? theme.colorScheme.background
@@ -45,7 +46,9 @@ class AchievementBar extends StatelessWidget {
                 width: double.infinity,
                 height: 10,
               ),
-              FractionallySizedBox(
+              AnimatedFractionallySizedBox(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
                 widthFactor: 1 / achievement.maxPoints * achievement.userPoints,
                 child: Container(
                   decoration: BoxDecoration(

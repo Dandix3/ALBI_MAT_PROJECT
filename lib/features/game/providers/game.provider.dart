@@ -21,7 +21,7 @@ class GameProvider with ChangeNotifier {
   Game? get game => _game;
   List<GameAchievement>? get allAchievements => _achievements;
 
-  List<GameAchievement>? get achievements => _achievements?.where((element) => element.nextAchievement != null).toList();
+  List<GameAchievement>? get achievements => _achievements?.where((element) => element.minPoints == 0).toList(); //todo: opravit zobrazování achievementů aby se zobrazovali ti první
 
   GameAchievement? get selectedAchievement => _selectedAchievement;
 
@@ -67,7 +67,7 @@ class GameProvider with ChangeNotifier {
   }
 
   Future<void> updateAchievement(GameAchievement achievement) async {
-    if (achievement.userPoints != _count) {
+    if (achievement.userPoints != _count && _requestFriendsToCheck.isNotEmpty) {
       await GameAchievementsService.updateGameAchievement(achievement, _requestFriendsToCheck).then((value) {
         if (value.statusCode == 200) {
           _achievements!.where((element) => element.id == achievement.id).first.userAchievement = UserAchievement.fromObject(value.data);

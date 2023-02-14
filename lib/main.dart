@@ -5,7 +5,6 @@ import 'package:albi_hry/features/library/providers/library.provider.dart';
 import 'package:albi_hry/features/notifications/providers/notification.provider.dart';
 import 'package:albi_hry/features/notifications/screens/notification.screen.dart';
 import 'package:albi_hry/features/user/providers/user.provider.dart';
-import 'package:albi_hry/shared/user/models/user.dart';
 import 'package:albi_hry/shared/utils/loading-widget/loading.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,11 +34,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => LoadingProvider()),
         ChangeNotifierProvider(create: (ctx) => LibraryProvider()),
         ChangeNotifierProvider(create: (ctx) => NotificationProvider()),
-        ChangeNotifierProxyProvider2<UserProvider, LibraryProvider, AuthProvider>(
-            create: (ctx) => AuthProvider(null, null),
-            update: (ctx, userProvider, libraryProvider, auth) =>
-                AuthProvider(
-                    userProvider, libraryProvider)),
+        ChangeNotifierProxyProvider4<UserProvider, LibraryProvider, UserFriendProvider, NotificationProvider, AuthProvider>(
+            create: (ctx) => AuthProvider(null, null, null, null),
+            update: (ctx, userProvider, libraryProvider, userFriendProvider, notificationProvider, prev) =>
+               prev!..setProviders(userProvider, libraryProvider, userFriendProvider, notificationProvider))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

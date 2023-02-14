@@ -20,13 +20,10 @@ class ApiService {
   }
 
   static Future<HttpResponse> post(String url, Map<String, dynamic> data) async {
-    print('asdasdasdasdsad');
     final response = await http.post(Uri.parse('${Config.apiUrl}$url'), body: jsonEncode(data), headers: {
       'Content-Type': 'application/json',
 
     });
-    print('asdasdasdsadsadd');
-    print(response.statusCode);
     return HttpResponse.fromJson(jsonDecode(response.body), response.statusCode);
   }
 
@@ -58,7 +55,6 @@ class ApiService {
 
   static Future<HttpResponse> autorizedPost(String url, Map<String, dynamic> data) async {
     final token = await getToken();
-    const apiUrl = "http://albi-hry-backend-master.ogapps.cloud";
     final response = await http.post(Uri.parse(Config.apiUrl+url), body: jsonEncode(data), headers: {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',

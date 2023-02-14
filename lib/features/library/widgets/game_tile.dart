@@ -5,7 +5,7 @@ class GameTile extends StatelessWidget {
   String title;
   String imageUrl;
   Function onTap;
-  double percentage;
+  String percentage;
 
 
   GameTile({Key? key, required this.title, required this.imageUrl, required this.onTap, required this.percentage}) : super(key: key);
@@ -40,7 +40,7 @@ class GameTile extends StatelessWidget {
             Row(
               children: [
                 RatingBarIndicator(
-                  rating: percentage,
+                  rating: double.parse(percentage),
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -49,7 +49,7 @@ class GameTile extends StatelessWidget {
                   itemSize: 30,
                   direction: Axis.vertical,
                 ),
-                Text('${percentage*100}%', style: TextStyle(color: Colors.amber)),
+                Text('${(double.parse(percentage)*100).toStringAsFixed(0)}%', style: TextStyle(color: Colors.amber)),
               ]
             ),
             SizedBox(width: 10),

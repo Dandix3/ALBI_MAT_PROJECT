@@ -33,7 +33,6 @@ class _LoginFormState extends State<LoginForm> {
         loadingProvider.setLoading(true);
         await authProvider.login(_emailController.text, _passwordController.text).then((value) {
           loadingProvider.setLoading(false);
-          print(value);
           if (value.status) {
             Navigator.of(context).pushNamedAndRemoveUntil(MainScreen.routeName, (route) => false);
           } else {

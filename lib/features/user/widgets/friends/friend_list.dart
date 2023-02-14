@@ -33,6 +33,26 @@ class UserFriendList extends StatelessWidget {
                 return Slidable(
                   key: Key('${friends[index].id.toString()} ${friendStatusType.toString()}'),
                   closeOnScroll: true,
+                  startActionPane: FriendStatusType.incoming == friendStatusType
+                      ? ActionPane(
+                          extentRatio: 0.25,
+                          motion: ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              onPressed: (ctx) {
+                                userFriendProvider.declineFriendRequest(friends[index].id, context);
+                              },
+                              icon: Icons.delete_forever,
+                              backgroundColor: theme.colorScheme.error,
+                              foregroundColor: theme.colorScheme.onPrimary,
+                            ),
+                          ],
+                        )
+                      : null,
                   endActionPane: ActionPane(
                     extentRatio: 0.25,
                     motion: ScrollMotion(),
@@ -62,14 +82,6 @@ class UserFriendList extends StatelessWidget {
                               },
                               icon: Icons.check,
                               backgroundColor: theme.colorScheme.primary,
-                              foregroundColor: theme.colorScheme.onPrimary,
-                            ),
-                            SlidableAction(
-                              onPressed: (ctx) {
-                                userFriendProvider.declineFriendRequest(friends[index].id, context);
-                              },
-                              icon: Icons.close,
-                              backgroundColor: theme.colorScheme.error,
                               foregroundColor: theme.colorScheme.onPrimary,
                             ),
                           ] : [

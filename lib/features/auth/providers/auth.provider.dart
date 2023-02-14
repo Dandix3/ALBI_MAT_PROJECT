@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:albi_hry/features/notifications/providers/notification.provider.dart';
 import 'package:albi_hry/shared/auth/data-access/auth.service.dart';
 import 'package:albi_hry/shared/storage/data-access/local_storage.service.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,19 @@ class AuthProvider with ChangeNotifier {
 
   final AuthService _authService = AuthService();
 
-  final UserProvider? _userProvider;
-  final LibraryProvider? _libraryProvider;
+  UserProvider? _userProvider;
+  LibraryProvider? _libraryProvider;
+  UserFriendProvider? _userFriendProvider;
+  NotificationProvider? _notificationProvider;
 
-  AuthProvider(this._userProvider, this._libraryProvider) {
+  void setProviders(UserProvider? userProvider, LibraryProvider? libraryProvider, UserFriendProvider? userFriendProvider, NotificationProvider? notificationProvider) {
+    _userProvider = userProvider;
+    _libraryProvider = libraryProvider;
+    _userFriendProvider = userFriendProvider;
+    _notificationProvider = notificationProvider;
+  }
+
+  AuthProvider(this._userProvider, this._libraryProvider, this._userFriendProvider, this._notificationProvider) {
     // todo: při pull refreshi se to aktivuje a buggne
     isLoggedIn();
   }
@@ -30,12 +40,13 @@ class AuthProvider with ChangeNotifier {
   Future<HttpResponse> login(String email, String password) async {
     try {
       final response = await AuthService.login(email, password);
-      print(response);
       if (response.statusCode == 200) {
         await LocalStorage.saveData('token', response.data);
         isAuthenticated = true;
         _userProvider!.fetchAndSetUser();
-        _libraryProvider!.fetchAndSetLibrary();
+        _userFriendProvider!.fetchAndSetFriends();
+        _notificationProvider!.fetchAndSetAchievementActions();
+        await _libraryProvider!.fetchAndSetLibrary();
         notifyListeners();
         return response;
       } else {
@@ -68,6 +79,7 @@ class AuthProvider with ChangeNotifier {
       final response = await _authService.logout();
       isAuthenticated = false;
       _libraryProvider!.clearLibrary();
+      _userProvider!.clearUser();
       notifyListeners();
       if (response.statusCode == 200) {
         return response.message;

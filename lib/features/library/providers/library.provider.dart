@@ -10,7 +10,7 @@ import '../../../shared/utils/snackbars/error_snackbar.dart';
 class LibraryProvider extends ChangeNotifier {
   static const String apiEndpoint = 'userGames';
 
-  GameService _gameService = GameService();
+  final GameService _gameService = GameService();
 
   List<Game> _games = [];
 
@@ -61,7 +61,6 @@ class LibraryProvider extends ChangeNotifier {
   Future<Game?> fetchGame(String barcode, BuildContext context) async {
     return await GameService.getGameByScan(barcode).then((value) {
           if (value is Game) {
-            _addGame(value);
             return value;
             } else {
               throwError(context: context, title: value.toString());

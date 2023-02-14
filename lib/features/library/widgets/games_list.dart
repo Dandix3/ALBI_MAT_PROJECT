@@ -15,12 +15,24 @@ class GamesList extends StatelessWidget {
     final gameProvider = Provider.of<GameProvider>(context);
     final theme = Theme.of(context);
 
+    String _getPercentage(int gameIndex) {
+      num allPoints = 0;
+      int allUserPoints = 0;
+      libraryProvider.games[gameIndex].achievements!.forEach((element) {
+        if (element.minPoints == 0) {
+          allPoints += element.maxPoints;
+          allUserPoints += element.userPoints;
+        }
+      });
+      return (allUserPoints / allPoints).toStringAsFixed(2);
+    }
+
     return ListView.separated(
       itemCount: libraryProvider.games.length,
       itemBuilder: (ctx, i) => GameTile(
         title: libraryProvider.games[i].name,
         imageUrl: "https://cdn.alza.cz/ImgW.ashx?fd=f5&cd=ZA012",
-        percentage: libraryProvider.games[i].achievements![0].userPoints / 10,
+        percentage: _getPercentage(i),
         onTap: () {
           gameProvider.selectGame(libraryProvider.games[i]);
           Navigator.of(context).pushNamed(GameDetailScreen.routeName);
