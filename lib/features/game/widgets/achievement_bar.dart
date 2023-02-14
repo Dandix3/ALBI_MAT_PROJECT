@@ -12,7 +12,6 @@ class AchievementBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
-    final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
     return AnimatedContainer(
@@ -64,7 +63,6 @@ class AchievementBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(achievement.minPoints.toString()),
               Text(achievement.userPoints.toString()),
               Text(achievement.maxPoints.toString()),
             ],

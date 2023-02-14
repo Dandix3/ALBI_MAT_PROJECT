@@ -31,93 +31,89 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       appBar: AppBar(
         title: Text(gameProvider.game!.name, style: theme.textTheme.headline4),
         actions: [
-          IconButton(
-            onPressed: () {
-              //show options dialog
-              showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(size.width, 80, 0, 0),
-                color: theme.primaryColorLight,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 10,
-                constraints: const BoxConstraints(maxWidth: 150),
-                items: [
-                  PopupMenuItem(
-                    child: GestureDetector(
-                      child: Row(
-                        children: [
-                          const Icon(Icons.star),
-                          const SizedBox(width: 10),
-                          Text("Ohodnotit", style: theme.textTheme.headline6),
-                        ],
-                      ),
-                      onTap: () => {
-                        Navigator.of(context).pop(),
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text("Ohodnotit hru",
-                                style: theme.textTheme.headline4),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("Zrušit",
-                                    style: theme.textTheme.headline6),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("Potvrdit",
-                                    style: theme.textTheme.headline6),
-                              ),
-                            ],
-                            content: Container(
-                              width: 200,
-                              height: 50,
-                              child: Center(
-                                child: RatingBar.builder(
-                                  initialRating: 5,
-                                  minRating: 0.5,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemSize: 35,
-                                  itemPadding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
-                                ),
-                              ),
+          PopupMenuButton(
+              position: PopupMenuPosition.under,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: theme.colorScheme.onBackground,
+              onSelected: (value) {
+                if (value == 0) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("Ohodnotit hru",
+                          style: theme.textTheme.headline4),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child:
+                              Text("Zrušit", style: theme.textTheme.headline6),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Potvrdit",
+                              style: theme.textTheme.headline6),
+                        ),
+                      ],
+                      content: Container(
+                        width: 200,
+                        height: 50,
+                        child: Center(
+                          child: RatingBar.builder(
+                            initialRating: 5,
+                            minRating: 0.5,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 35,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
                             ),
+                            onRatingUpdate: (rating) {
+                              print(rating);
+                            },
                           ),
-                        )
-                      },
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  print("Odstranit hru");
+                }
+              },
+              itemBuilder: (ctx) {
+                return [
+                  PopupMenuItem(
+                    value: 0,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.star),
+                        const SizedBox(width: 10),
+                        Text("Ohodnotit hru", style: theme.textTheme.headline6),
+                      ],
                     ),
                   ),
                   PopupMenuItem(
+                    value: 1,
                     child: Row(
                       children: [
                         const Icon(Icons.delete_forever),
                         const SizedBox(width: 10),
-                        Text("Odstranit", style: theme.textTheme.headline6),
+                        Text("Odstranit hru", style: theme.textTheme.headline6),
                       ],
                     ),
                   ),
-                ],
-              );
-            },
-            icon: const Icon(Icons.more_vert),
-          ),
+                ];
+              }),
         ],
         centerTitle: true,
       ),
@@ -164,112 +160,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                     setState(() {
                       points = gameProvider.achievements![i].userPoints;
                     });
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: theme.colorScheme.background,
-                      builder: (ctx) => Container(
-                        margin: const EdgeInsets.only(bottom: 25),
-                        height: 50,
-                        color: theme.colorScheme.background,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.2,
-                              child: IconButton(
-                                  onPressed: () {
-                                    gameProvider.minusOneAchievement(
-                                        gameProvider.achievements![i]);
-                                  },
-                                  highlightColor: theme.colorScheme.primary,
-                                  icon: Icon(Icons.remove)),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.2,
-                              child: IconButton(
-                                  onPressed: () {
-                                    gameProvider.plusOneAchievement(
-                                        gameProvider.achievements![i]);
-                                  },
-                                  highlightColor: theme.colorScheme.primary,
-                                  icon: Icon(Icons.add)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      barrierColor: Colors.black.withOpacity(0),
-                      clipBehavior: Clip.antiAlias,
-                      isScrollControlled: true,
-                    ).whenComplete(
-                      () {
-                        if (points != gameProvider.achievements![i].userPoints) {
-                          showDialog(
-                          context: context,
-                          builder: (ctx) => Container(
-                            width: 100,
-                            child: AlertDialog(
-                              title: Text("Vyberte přítele pro potvrzení",
-                                  style: theme.textTheme.headline6),
-                              content: Container(
-                                height: 200,
-                                width: 100,
-                                child: ListView.separated(
-                                  itemBuilder: (context, i) {
-                                    return RequestFriendCheckbox(
-                                        friend: userFriendProvider
-                                            .friends[i].friend!);
-                                  },
-                                  itemCount: userFriendProvider.friends.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      child: Divider(
-                                        color: theme.colorScheme.background,
-                                        thickness: 1,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    gameProvider.achievements![i].userPoints = points;
-                                    gameProvider.selectAchievement(null);
-                                  },
-                                  child: Text("Zrušit",
-                                      style: theme.textTheme.bodyText1),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    gameProvider.updateAchievement(
-                                        gameProvider.achievements![i]);
-                                    gameProvider.selectAchievement(null);
-                                  },
-                                  child: Text("Potvrdit",
-                                      style: theme.textTheme.bodyText1),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ).whenComplete(
-                            () => {
-                              gameProvider.selectAchievement(null),
-                              setState(() {
-                                points = 0;
-                              })
-                            },
-                        );
-                        }
-                        gameProvider.selectAchievement(null);
-                      },
-                    );
+
+                    achievementModifyModalBottomSheet(context, theme, size, gameProvider, userFriendProvider, i);
                   },
                   child: AchievementBar(
-                    achievement: gameProvider.achievements![i]
-                  ),
+                      achievement: gameProvider.achievements![i]),
                 ),
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(
@@ -282,5 +177,165 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> achievementModifyModalBottomSheet(BuildContext context,  ThemeData theme, Size size, GameProvider gameProvider, UserFriendProvider userFriendProvider, int i) {
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.colorScheme.background,
+      barrierColor: Colors.black.withOpacity(0),
+      clipBehavior: Clip.antiAlias,
+      isScrollControlled: true,
+      builder: (ctx) => Container(
+        margin: const EdgeInsets.only(bottom: 25),
+        height: 50,
+        color: theme.colorScheme.background,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              width: size.width * 0.2,
+              child: IconButton(
+                  onPressed: () {
+                    gameProvider
+                        .minusOneAchievement(gameProvider.achievements![i]);
+                  },
+                  highlightColor: theme.colorScheme.primary,
+                  icon: Icon(Icons.remove)),
+            ),
+            SizedBox(
+              width: size.width * 0.2,
+              child: IconButton(
+                  onPressed: () {
+                    gameProvider
+                        .plusOneAchievement(gameProvider.achievements![i]);
+                  },
+                  highlightColor: theme.colorScheme.primary,
+                  icon: Icon(Icons.add)),
+            ),
+          ],
+        ),
+      ),
+    ).whenComplete(
+      () {
+        if (points != gameProvider.achievements![i].userPoints) {
+          showDialog(
+            context: context,
+            builder: (ctx) => Container(
+              width: 100,
+              child: AlertDialog(
+                title: Text("Vyberte přítele pro potvrzení",
+                    style: theme.textTheme.headline6),
+                content: Container(
+                  height: 200,
+                  width: 100,
+                  child: ListView.separated(
+                    itemBuilder: (context, i) {
+                      return RequestFriendCheckbox(
+                          friend: userFriendProvider.friends[i].friend!);
+                    },
+                    itemCount: userFriendProvider.friends.length,
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Container(
+                        child: Divider(
+                          color: theme.colorScheme.background,
+                          thickness: 1,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      gameProvider.achievements![i].userPoints = points;
+                      gameProvider.selectAchievement(null);
+                    },
+                    child: Text("Zrušit", style: theme.textTheme.bodyText1),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      gameProvider
+                          .updateAchievement(gameProvider.achievements![i]);
+                      gameProvider.selectAchievement(null);
+                    },
+                    child: Text("Potvrdit", style: theme.textTheme.bodyText1),
+                  ),
+                ],
+              ),
+            ),
+          ).whenComplete(
+            () => {
+              gameProvider.selectAchievement(null),
+              setState(() {
+                points = 0;
+              })
+            },
+          );
+        }
+        gameProvider.selectAchievement(null);
+      },
+    );
+  }
+
+  Future<dynamic> buildShowModalBottomSheet(
+      BuildContext context, ThemeData theme, GameProvider gameProvider, int i) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: theme.colorScheme.background.withOpacity(0),
+        barrierColor: Colors.black.withOpacity(0),
+        clipBehavior: Clip.antiAlias,
+        enableDrag: false,
+        builder: (ctx) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 25),
+            height: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.background,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Center(
+                    child: IconButton(
+                        iconSize: 30,
+                        onPressed: () {
+                          gameProvider.minusOneAchievement(
+                              gameProvider.achievements![i]);
+                        },
+                        highlightColor: theme.colorScheme.primary,
+                        icon: Icon(Icons.remove)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Potvrdit", style: theme.textTheme.headline5),
+                ),
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.background,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Center(
+                    child: IconButton(
+                        iconSize: 30,
+                        onPressed: () {
+                          gameProvider.minusOneAchievement(
+                              gameProvider.achievements![i]);
+                        },
+                        highlightColor: theme.colorScheme.primary,
+                        icon: Icon(Icons.add)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

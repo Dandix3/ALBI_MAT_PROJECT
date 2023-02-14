@@ -3,8 +3,8 @@ import 'package:albi_hry/features/user/providers/user.provider.dart';
 import 'package:albi_hry/main-sceen/main.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
+import '../../library/providers/library.provider.dart';
 import '../widgets/profile_header.dart';
 
 class UserScreen extends StatelessWidget {
@@ -16,13 +16,33 @@ class UserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final userService = Provider.of<UserProvider>(context);
     final authService = Provider.of<AuthProvider>(context);
+    final libraryProvider = Provider.of<LibraryProvider>(context);
 
     Future<void> logout() async {
       await authService.logout().then((value) => Navigator.of(context)
           .pushNamedAndRemoveUntil(
               MainScreen.routeName, (Route<dynamic> route) => false));
+    }
+
+    num getAchievementsCount() {
+      num count = 0;
+      libraryProvider.games.forEach((game) {
+        count += game.achievements!.length - 1; //todo: -1 is a temporary; kvůli tomu achievementu který má pokračovat
+      });
+      return count;
+    }
+
+    num getAchievementsUserCount() {
+      num count = 0;
+      libraryProvider.games.forEach((game) {
+        game.achievements!.forEach((element) {
+          if (element.userPoints == element.maxPoints && element.minPoints == 0) {
+            count++;
+          }
+        });
+      });
+      return count;
     }
 
     return SingleChildScrollView(
@@ -36,11 +56,87 @@ class UserScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Container(
                       width: size.width,
-                      height: size.height * 0.8,
+                      height: size.height * 0.6,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Center(child: Text("Zde budou statistiky atd."))
+                          Text("Počet vlastněných her"),
+                          const SizedBox(height: 10),
+                          Container(
+                            width: size.width * 0.8,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  width: double.infinity,
+                                  height: 10,
+                                ),
+                                FractionallySizedBox(
+                                  widthFactor: 1 / 350 * 4,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    height: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            width: size.width * 0.8,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(libraryProvider.games.length.toString()),
+                                Text("350"),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text("Počet splněných úspěchů"),
+                          const SizedBox(height: 10),
+                          Container(
+                            width: size.width * 0.8,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  width: double.infinity,
+                                  height: 10,
+                                ),
+                                FractionallySizedBox(
+                                  widthFactor: 1 / getAchievementsCount() * getAchievementsUserCount(),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    height: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            width: size.width * 0.8,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(getAchievementsUserCount().toString()),
+                                Text(getAchievementsCount().toString()),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
                prev!..setProviders(userProvider, libraryProvider, userFriendProvider, notificationProvider))
       ],
       child: MaterialApp(
+        themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
         title: 'Alby hry',
         theme: albi_theme,

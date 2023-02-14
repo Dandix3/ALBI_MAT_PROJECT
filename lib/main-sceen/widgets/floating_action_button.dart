@@ -50,36 +50,38 @@ class FloatingActionBtn extends StatelessWidget {
       await FlutterBarcodeScanner.scanBarcode(
           "#ffffff", "Zpět", true, ScanMode.BARCODE)
           .then((value) => {
-        libraryProvider.fetchGame(value, context).then((value) {
-          if (value != null) {
-            showDialog(context: context, builder: (context) {
-              return AlertDialog(
-                title: Text("Chcete přidat hru do knihovny?"),
-                content: Row(
-                  children: [
-                    Text("Načtená hra: "),
-                    Text(value.name, style: TextStyle(fontWeight: FontWeight.bold),)
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Zrušit"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      libraryProvider.addGame(value);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Přidat"),
-                  ),
-                ],
-              );
-            });
-          }
-        })
+            if (value != "-1") {
+              libraryProvider.fetchGame(value, context).then((value) {
+                if (value != null) {
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      title: Text("Chcete přidat hru do knihovny?"),
+                      content: Row(
+                        children: [
+                          Text("Načtená hra: "),
+                          Text(value.name, style: TextStyle(fontWeight: FontWeight.bold),)
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Zrušit"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            libraryProvider.addGame(value);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Přidat"),
+                        ),
+                      ],
+                    );
+                  });
+                }
+              })
+            }
         //todo: pokud to najde víc her tak zobrazit dialog že ještě má naskenovat druhý qr kód a po odkliku zapnout scener
       });
     }

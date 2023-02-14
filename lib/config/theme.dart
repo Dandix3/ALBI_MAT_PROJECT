@@ -4,12 +4,14 @@ import 'package:albi_hry/config/colors.dart';
 
 ThemeData albi_theme = ThemeData.dark()
     .copyWith( // možná appbar hodit průhledy jak HBO appka
+  brightness: Brightness.dark,
   useMaterial3: true,
   colorScheme: const ColorScheme.dark().copyWith(
     primary: AlbiColors.primaryColorBlue,
     secondary: AlbiColors.primaryColorRed,
     tertiary: AlbiColors.primaryColorYellow,
     background: AlbiColors.backgroundColorLight,
+    onBackground: AlbiColors.backgroundColorLighter,
   ),
   buttonTheme: const ButtonThemeData(
     buttonColor: AlbiColors.primaryColorRed,
