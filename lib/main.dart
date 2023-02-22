@@ -1,21 +1,21 @@
-import 'package:albi_hry/features/auth/providers/auth.provider.dart';
-import 'package:albi_hry/features/game/providers/game.provider.dart';
-import 'package:albi_hry/features/game/screens/game_detail.screen.dart';
-import 'package:albi_hry/features/library/providers/library.provider.dart';
-import 'package:albi_hry/features/notifications/providers/notification.provider.dart';
-import 'package:albi_hry/features/notifications/screens/notification.screen.dart';
-import 'package:albi_hry/features/user/providers/user.provider.dart';
-import 'package:albi_hry/shared/utils/loading-widget/loading.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app/main/main.screen.dart';
+import 'app/pages/auth/providers/auth.provider.dart';
+import 'app/pages/auth/screens/login.screen.dart';
+import 'app/pages/auth/screens/register.screen.dart';
+import 'app/pages/game/providers/game.provider.dart';
+import 'app/pages/game/screens/game_detail.screen.dart';
+import 'app/pages/library/providers/library.provider.dart';
+import 'app/pages/notifications/providers/notification.provider.dart';
+import 'app/pages/notifications/screens/notification.screen.dart';
+import 'app/pages/user/providers/user-friend.provider.dart';
+import 'app/pages/user/providers/user.provider.dart';
+import 'app/pages/user/screens/user.screen.dart';
+import 'app/widgets/loading-widget/loading.provider.dart';
 import 'config/theme.dart';
 
-import 'features/user/providers/user-friend.provider.dart';
-import 'main-sceen/main.screen.dart';
-import 'features/auth/screens/login.screen.dart';
-import 'features/auth/screens/register.screen.dart';
-import 'features/user/screens/user.screen.dart';
 
 void main() {
   runApp(const MyApp());
