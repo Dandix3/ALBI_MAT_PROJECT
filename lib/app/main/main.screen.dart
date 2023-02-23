@@ -3,6 +3,7 @@ import 'package:albi_hry/app/main/widgets/floating_action_button.dart';
 import 'package:albi_hry/app/pages/auth/providers/auth.provider.dart';
 import 'package:albi_hry/app/pages/auth/screens/login.screen.dart';
 import 'package:albi_hry/app/pages/library/screens/library.screen.dart';
+import 'package:albi_hry/app/pages/social_feat/screens/social_network_screen.dart';
 import 'package:albi_hry/app/pages/user/screens/friends_screen.dart';
 import 'package:albi_hry/app/pages/user/screens/user.screen.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
                     )
                   : screenType == ScreenType.Nothing
                       ? Text(
-                          'Not Implemented',
+                          'Komunita',
                           style: theme.textTheme.headline4,
                         )
                       : screenType == ScreenType.Friends
@@ -107,14 +108,14 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: SafeArea(
           child: (screenType == ScreenType.Games)
-              ? LibraryScreen()
+              ? const LibraryScreen()
               : (screenType == ScreenType.Nothing)
-                  ? Text('Not Implemented')
+                  ? const SocialNetworkScreen()
                   : (screenType == ScreenType.Friends)
                       ? FriendsScreen()
                       : screenType == ScreenType.Profile
-                          ? UserScreen()
-                          : Text('Not Implemented'),
+                          ? const UserScreen()
+                          : const Text('Not Implemented'),
         ),
         floatingActionButton: FloatingActionBtn(screenType: screenType),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
