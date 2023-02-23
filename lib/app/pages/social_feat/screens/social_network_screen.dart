@@ -1,6 +1,8 @@
 import 'package:albi_hry/app/pages/social_feat/widgets/groups_list.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/gps_map.dart';
+
 class SocialNetworkScreen extends StatelessWidget {
   const SocialNetworkScreen({Key? key}) : super(key: key);
 
@@ -50,6 +52,16 @@ class SocialNetworkScreen extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
+
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MapWidget(),
+              ));
+            },
+            child: Text("Mapa"),
+          )
+
         ],
       ),
     );

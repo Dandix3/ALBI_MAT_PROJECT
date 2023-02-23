@@ -10,7 +10,7 @@ class GroupList extends StatelessWidget {
 
     return Container(
       height: 100,
-      width: size.width * 0.9,
+      width: size.width,
       child: ListView.builder(
         itemCount: 10,
         shrinkWrap: true,

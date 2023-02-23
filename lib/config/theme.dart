@@ -51,7 +51,7 @@ ThemeData albi_theme = ThemeData.dark()
     headline4: TextStyle(
       letterSpacing: 1,
       fontFamily: 'VarelaRound',
-      fontSize: 22,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
