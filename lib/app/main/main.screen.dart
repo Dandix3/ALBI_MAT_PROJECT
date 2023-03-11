@@ -25,19 +25,11 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> {
   ScreenType screenType = ScreenType.Games;
   String barcode = '';
 
   final TextEditingController controller = TextEditingController();
-
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(length: 4, vsync: this);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +43,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         else
           {Navigator.of(context).pushNamed(LoginScreen.routeName)}
       });
-    }
-
-    Future<Icon> getIcon() async {
-      final asd = await authProvider.isLoggedIn();
-      if (asd) {
-        return Icon(Icons.notifications);
-      } else {
-        return Icon(Icons.login);
-      }
     }
 
     return InitStartUp(
