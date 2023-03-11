@@ -60,7 +60,9 @@ class SocialNetworkScreen extends StatelessWidget {
               ));
             },
             child: Text("Mapa"),
-          )
+          ),
+
+          //AutofillGroup(child: )
 
         ],
       ),

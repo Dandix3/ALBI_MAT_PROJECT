@@ -14,8 +14,16 @@ class FriendsScreen extends StatefulWidget {
   State<FriendsScreen> createState() => _FriendsScreenState();
 }
 
-class _FriendsScreenState extends State<FriendsScreen> {
+class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProviderStateMixin {
   FriendStatusType index = FriendStatusType.accepted;
+
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,99 +40,52 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
     if (userFriendProvider.friendStatus == true) {
       setState(() {
-        index = FriendStatusType.pending;
+        _tabController.index = 2;
       });
     }
 
     return Container(
       child: authProvider.isAuthenticated
           ? Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          TabBar(
+            controller: _tabController,
+            indicatorColor: theme.colorScheme.primary,
+            labelColor: theme.colorScheme.primary,
+            unselectedLabelColor: Colors.white70,
+            tabs: [
+              Tab(
+                child: Text('Přátelé'),
+              ),
+              Tab(
+                child: Text('Žádosti'),
+              ),
+              Tab(
+                child: Text('Nepřátelé'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
               children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: theme.colorScheme.primary,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              GestureDetector(
-                                child: Text('Přátelé',
-                                    style: theme.textTheme.headline5),
-                                onTap: () =>
-                                    changeTab(FriendStatusType.accepted),
-                              ),
-                              GestureDetector(
-                                child: Text('Žádosti',
-                                    style: theme.textTheme.headline5),
-                                onTap: () =>
-                                    changeTab(FriendStatusType.incoming),
-                              ),
-                              GestureDetector(
-                                child: Text('Nevyřízené',
-                                    style: theme.textTheme.headline5),
-                                onTap: () =>
-                                    changeTab(FriendStatusType.pending),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                      height: 5,
-                      width: index == FriendStatusType.accepted
-                          ? 60
-                          : index == FriendStatusType.incoming
-                              ? 65
-                              : 85,
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(10),
-                        ),
-                      ),
-                      margin: EdgeInsets.only(
-                        top: 43,
-                        left: index == FriendStatusType.accepted
-                            ? size.width * 0.08
-                            : index == FriendStatusType.incoming
-                                ? size.width * 0.38
-                                : size.width * 0.7,
-                      ),
-                    ),
-                  ],
+                UserFriendList(
+                  friendStatusType: FriendStatusType.accepted,
+                  friends: userFriendProvider.friends,
                 ),
-                SizedBox(
-                  height: size.height * 0.8 - 50,
-                  child: index == FriendStatusType.accepted
-                      ? UserFriendList(
-                          friends: userFriendProvider.friends,
-                          friendStatusType: FriendStatusType.accepted)
-                      : index == FriendStatusType.incoming
-                          ? UserFriendList(
-                              friends: userFriendProvider.friendsRequests,
-                              friendStatusType: FriendStatusType.incoming)
-                          : UserFriendList(
-                              friends: userFriendProvider.friendsPending,
-                              friendStatusType: FriendStatusType.pending),
+                UserFriendList(
+                  friendStatusType: FriendStatusType.incoming,
+                  friends: userFriendProvider.friendsRequests,
+                ),
+                UserFriendList(
+                  friendStatusType: FriendStatusType.pending,
+                  friends: userFriendProvider.friendsPending,
                 ),
               ],
-            )
+            ),
+          ),
+        ],
+      )
           : Center(
               child: Text(
                 'Pro zobrazení přátel se musíte přihlásit',
