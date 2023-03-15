@@ -1,3 +1,5 @@
+import 'package:albi_hry/app/pages/social_feat/providers/club.provider.dart';
+import 'package:albi_hry/app/pages/social_feat/screens/club_detail.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ import 'app/pages/user/providers/user-friend.provider.dart';
 import 'app/pages/user/providers/user.provider.dart';
 import 'app/pages/user/screens/user.screen.dart';
 import 'app/widgets/loading-widget/loading.provider.dart';
+import 'common/club/models/club.dart';
 import 'config/theme.dart';
 
 
@@ -34,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => LoadingProvider()),
         ChangeNotifierProvider(create: (ctx) => LibraryProvider()),
         ChangeNotifierProvider(create: (ctx) => NotificationProvider()),
+        ChangeNotifierProvider(create: (ctx) => ClubProvider()),
         ChangeNotifierProxyProvider4<UserProvider, LibraryProvider, UserFriendProvider, NotificationProvider, AuthProvider>(
             create: (ctx) => AuthProvider(null, null, null, null),
             update: (ctx, userProvider, libraryProvider, userFriendProvider, notificationProvider, prev) =>
@@ -42,7 +46,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
-        title: 'Alby hry',
+        title: 'Albi hry',
         theme: albi_theme,
         initialRoute: '/main_screen',
         routes: {
@@ -52,6 +56,7 @@ class MyApp extends StatelessWidget {
           UserScreen.routeName: (ctx) => const UserScreen(),
           GameDetailScreen.routeName: (ctx) => const GameDetailScreen(),
           NotificationScreen.routeName: (ctx) => const NotificationScreen(),
+          ClubDetailScreen.routeName: (ctx) => ClubDetailScreen(club: ModalRoute.of(ctx)!.settings.arguments as Club),
         },
       ),
     );

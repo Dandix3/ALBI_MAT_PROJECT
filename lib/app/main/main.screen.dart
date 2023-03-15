@@ -6,6 +6,7 @@ import 'package:albi_hry/app/pages/library/screens/library.screen.dart';
 import 'package:albi_hry/app/pages/social_feat/screens/social_network_screen.dart';
 import 'package:albi_hry/app/pages/user/screens/friends_screen.dart';
 import 'package:albi_hry/app/pages/user/screens/user.screen.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 
 import 'package:albi_hry/app/widgets/init_startup.dart';
 
+import '../pages/notifications/providers/notification.provider.dart';
 import '../pages/notifications/screens/notification.screen.dart';
 
 
@@ -35,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final theme = Theme.of(context);
+    final notificationProvider = Provider.of<NotificationProvider>(context);
 
     void pushNotificationPage() {
       authProvider.isLoggedIn().then((value) => {
@@ -84,12 +87,20 @@ class _MainScreenState extends State<MainScreen> {
                 'Not Implemented',
                 style: theme.textTheme.headline4,
               ),
+              //badge with number
               IconButton(
                 onPressed: pushNotificationPage,
                 icon: authProvider.isAuthenticated
-                    ? const Icon(
-                  Icons.notifications,
-                  color: Colors.white,
+                    ? Badge(
+                  badgeContent: Text(
+                    notificationProvider.achievementActions.length.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  showBadge: notificationProvider.achievementActions.length > 0,
+                  child: const Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                  ),
                 )
                     : const Icon(
                   Icons.login,

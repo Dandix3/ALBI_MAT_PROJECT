@@ -28,7 +28,7 @@ class FloatingActionBtn extends StatelessWidget {
       case ScreenType.Games:
         return Icon(Icons.qr_code_scanner);
       case ScreenType.Nothing:
-        return Icon(Icons.check);
+        return Icon(Icons.search);
       case ScreenType.Profile:
         return Icon(Icons.edit);
       case ScreenType.Friends:

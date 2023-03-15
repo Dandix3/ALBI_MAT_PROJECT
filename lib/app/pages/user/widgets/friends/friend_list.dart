@@ -100,12 +100,11 @@ class UserFriendList extends StatelessWidget {
                           ]
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 40,
-                        backgroundImage:
-                        NetworkImage('https://picsum.photos/200'),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network("https://picsum.photos/200"),
                       ),
                       title: Text(
                         friends[index].friend!.nickname,

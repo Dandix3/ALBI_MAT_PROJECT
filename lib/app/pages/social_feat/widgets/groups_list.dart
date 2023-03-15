@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../common/club/models/club.dart';
+import '../providers/club.provider.dart';
+import 'club_card.dart';
 
 class GroupList extends StatelessWidget {
   const GroupList({Key? key}) : super(key: key);
@@ -7,43 +12,39 @@ class GroupList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final clubProvider = Provider.of<ClubProvider>(context);
 
     return Container(
       height: 100,
       width: size.width,
-      child: ListView.builder(
-        itemCount: 10,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 3),
-            child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              clipBehavior: Clip.values[1],
-              child: Container(
-                width: 100,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 100,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      "Skupina",
-                      style: theme.textTheme.headline6,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+      child: FutureBuilder<List<Club>>(
+        future: clubProvider.fetchAndSetNearbyClubs(1000, 10),
+        builder: (context, snapchot) {
+          if (snapchot.hasData) {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapchot.data!.length,
+              itemBuilder: (context, index) {
+                return ClubCard(
+                  club: snapchot.data![index],
+                );
+              },
+            );
+          } else {
+            if (snapchot.error != null) {
+              return Center(
+                child: Text("Něco se pokazilo"),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }
+        }
+      )
     );
   }
 }
+
+

@@ -61,7 +61,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
                 child: Text('Žádosti'),
               ),
               Tab(
-                child: Text('Nepřátelé'),
+                child: Text('Nevyřízené'),
               ),
             ],
           ),
