@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 void throwSuccess({required BuildContext context, required String title, String? message}) {
   final theme = Theme.of(context);
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 10),

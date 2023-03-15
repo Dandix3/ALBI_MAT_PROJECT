@@ -14,7 +14,6 @@ class SocialNetworkScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-
     return Container(
       child: Column(
         children: [
@@ -22,10 +21,10 @@ class SocialNetworkScreen extends StatelessWidget {
             height: 20,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(
-                width: size.width * 0.05,
-              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -33,6 +32,12 @@ class SocialNetworkScreen extends StatelessWidget {
                   ));
                 },
                 child: Text("Vytvořit skupinu"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  ;
+                },
+                child: Text("Moje skupiny"),
               ),
             ],
           ),
@@ -93,8 +98,101 @@ class SocialNetworkScreen extends StatelessWidget {
               ),
             ],
           ),
-          //GroupList(),
 
+          GroupList2(),
+        ],
+      ),
+    );
+  }
+}
+
+class GroupList2 extends StatelessWidget {
+  const GroupList2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final clubProvider = Provider.of<ClubProvider>(context);
+
+    return Container(
+      height: 100,
+      width: size.width,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Container(
+            width: size.width * 0.32,
+            child: Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("Zapař D&D", style: theme.textTheme.headline6),
+                  Text("Pardubice", style: theme.textTheme.subtitle1),
+                  Text("20. 5. 2023", style: theme.textTheme.subtitle2),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: size.width * 0.32,
+            child: Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Den deskovek ALBI", style: theme.textTheme.headline6, overflow: TextOverflow.ellipsis),
+                  ),
+                  Text("Praha", style: theme.textTheme.subtitle1),
+                  Text("18. 8. 2023", style: theme.textTheme.subtitle2),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: size.width * 0.32,
+            child: Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Deskovačka", style: theme.textTheme.headline6, overflow: TextOverflow.ellipsis),
+                  ),
+                  Text("Opava", style: theme.textTheme.subtitle1),
+                  Text("14. 7. 2023", style: theme.textTheme.subtitle2),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: size.width * 0.32,
+            child: Card(
+              elevation: 2,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Catan párty", style: theme.textTheme.headline6, overflow: TextOverflow.ellipsis),
+                  ),
+                  Text("Pardubice", style: theme.textTheme.subtitle1),
+                  Text("7. 6. 2023", style: theme.textTheme.subtitle2),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -8,7 +8,7 @@ class Club {
   final String name;
   final String? description;
   final User owner;
-  List<ClubMember>? members;
+  List<ClubMember> members;
   final String address;
   final String city;
   final String? country;
@@ -40,7 +40,7 @@ class Club {
       name: data['name'],
       description: data['description'],
       owner: User.fromObject(data['owner']),
-      members: data['members'] != null ? List<ClubMember>.from(data['members'].map((x) => ClubMember.fromObject(x))) : null,
+      members: data['members'] != null ? List<ClubMember>.from(data['members'].map((x) => ClubMember.fromObject(x))) : [],
       address: data['address'],
       city: data['city'],
       country: data['country'],
@@ -57,7 +57,7 @@ class Club {
     name: json["name"],
     description: json["description"],
     owner: User.fromJson(json["owner"]),
-    members: json["members"] != null ? List<ClubMember>.from(json["members"].map((x) => ClubMember.fromJson(x))) : null,
+    members: json["members"] != null ? List<ClubMember>.from(json["members"].map((x) => ClubMember.fromJson(x))) : [],
     address: json["address"],
     city: json["city"],
     country: json["country"],

@@ -68,56 +68,36 @@ class ClubService {
     }
   }
 
-  Future<Object?> deleteClub(int id) async {
+  Future<HttpResponse> deleteClub(int id) async {
     final response = await ApiService.autorizedDelete('$apiEndpoint/$id');
 
-    if (response.statusCode == 200) {
-      return response;
-    } else {
-      return response.message;
-    }
+    return response;
   }
 
-  Future<Object?> removeMember(int id, int memberId) async {
-    final response = await ApiService.autorizedPost('$apiEndpoint/$id/remove/$memberId', {});
+  Future<HttpResponse> removeMember(int id) async {
+    final response = await ApiService.autorizedPost('$apiEndpoint/remove/$id', {});
 
-    if (response.statusCode == 200) {
-      return response;
-    } else {
-      return response.message;
-    }
+    return response;
   }
 
-  Future<Object?> acceptMember(int id, int memberId) async {
-    final response = await ApiService.autorizedPost('$apiEndpoint/$id/accept/$memberId', {});
+  Future<HttpResponse> acceptMember(int id) async {
+    final response = await ApiService.autorizedPost('$apiEndpoint/accept/$id', {});
 
-    if (response.statusCode == 200) {
-      return response;
-    } else {
-      return response.message;
-    }
+    return response;
   }
 
-  Future<Object?> declineMemberRequest(int id, int memberId) async {
-    final response = await ApiService.autorizedPost('$apiEndpoint/$id/decline/$memberId', {});
+  Future<HttpResponse> declineMemberRequest(int id) async {
+    final response = await ApiService.autorizedPost('$apiEndpoint/decline/$id', {});
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      return response.message;
-    }
+    return response;
   }
 
-  Future<Object?> inviteMembers(int id, List memberIds) async {
+  Future<HttpResponse> inviteMembers(int id, List memberIds) async {
     final response = await ApiService.autorizedPost('$apiEndpoint/invite/$id', {
       "user_ids": memberIds.toString(),
     });
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      return response.message;
-    }
+    return response;
   }
 
   Future<HttpResponse> joinToClub(int id) async {
@@ -126,14 +106,11 @@ class ClubService {
     return response;
   }
 
-  Future<Object?> leaveClub(int id) async {
+  Future<HttpResponse> leaveClub(int id) async {
     final response = await ApiService.autorizedPost('$apiEndpoint/leave/$id', {});
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      return response.message;
-    }
+    return response;
+
   }
 
 }

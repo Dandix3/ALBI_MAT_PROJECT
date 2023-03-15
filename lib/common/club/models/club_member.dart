@@ -5,7 +5,7 @@ import 'package:albi_hry/common/user/models/user.dart';
 class ClubMember {
   final int id;
   final User user;
-  final int role;
+  int role;
   final DateTime createdAt;
   final DateTime updatedAt;
 

@@ -98,39 +98,42 @@ class ClubProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> deleteClub(int id) async {
+  Future<void> deleteClub(int id, BuildContext context) async {
     return _clubService.deleteClub(id).then((value) {
-      if (value is HttpResponse) {
-
+      if (value.status == true) {
+        _nearbyClubs.removeWhere((element) => element.id == id);
+        notifyListeners();
+        throwSuccess(context: context, title: "Skupina smazána");
       } else {
 
       }
     });
   }
 
-  Future<void> removeMember(int id, int memberId) async {
-    return _clubService.removeMember(id, memberId).then((value) {
-      if (value is HttpResponse) {
+  Future<bool> removeMember(int id) async {
+    return _clubService.removeMember(id).then((value) {
+      if (value.status == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
 
+  Future<void> acceptMember(ClubMember clubMember) async {
+    return _clubService.acceptMember(clubMember.id).then((value) {
+      if (value.status == true) {
+        clubMember.role = 1;
+        notifyListeners();
       } else {
 
       }
     });
   }
 
-  Future<void> acceptMember(int id, int memberId) async {
-    return _clubService.acceptMember(id, memberId).then((value) {
-      if (value is HttpResponse) {
-
-      } else {
-
-      }
-    });
-  }
-
-  Future<void> declineMemberRequest(int id, int memberId) async {
-    return _clubService.declineMemberRequest(id, memberId).then((value) {
-      if (value is HttpResponse) {
+  Future<void> declineMemberRequest(int id) async {
+    return _clubService.declineMemberRequest(id).then((value) {
+      if (value.status == true) {
 
       } else {
 
@@ -140,28 +143,32 @@ class ClubProvider extends ChangeNotifier {
 
   Future<void> inviteMembers(int id, List<int> members) async {
     return _clubService.inviteMembers(id, members).then((value) {
-      if (value is HttpResponse) {
-
-      } else {
-
-      }
-    });
-  }
-
-  Future<List<ClubMember>?> joinClub(int id) async {
-    return _clubService.joinToClub(id).then((value) {
       if (value.status == true) {
-        return value.data.map<ClubMember>((e) => ClubMember.fromObject(e)).toList();
+
       } else {
 
       }
     });
   }
 
-  Future<void> leaveClub(int id) async {
-    return _clubService.leaveClub(id).then((value) {
-      if (value is HttpResponse) {
+  Future<List<ClubMember>?> joinClub(Club club, BuildContext context) async {
+    return _clubService.joinToClub(club.id).then((value) {
+      if (value.status == true) {
+        club.members = value.data.map<ClubMember>((e) => ClubMember.fromObject(e)).toList();
+        notifyListeners();
+        throwSuccess(context: context, title: "Byl jste přidán do skupiny");
+      } else {
+        return null;
+      }
+    });
+  }
 
+  Future<void> leaveClub(Club club, BuildContext context) async {
+    return _clubService.leaveClub(club.id).then((value) {
+      if (value.status == true) {
+        club.members = value.data.map<ClubMember>((e) => ClubMember.fromObject(e)).toList();
+        notifyListeners();
+        throwSuccess(context: context, title: "Opustil jste skupinu");
       } else {
 
       }

@@ -87,6 +87,11 @@ ThemeData albi_theme = ThemeData.dark()
       fontSize: 12,
       color: Colors.grey,
     ),
+    caption: TextStyle(
+      fontFamily: 'VarelaRound',
+      fontSize: 10,
+      color: Colors.grey,
+    ),
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: AlbiColors.backgroundColorLighter,
